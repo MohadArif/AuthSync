@@ -6,6 +6,7 @@ import com.example.AuthSync.dto.AuthResponse;
 import com.example.AuthSync.dto.ResetPasswordRequest;
 import com.example.AuthSync.service.UserService;
 import com.example.AuthSync.utility.JwtService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @Log4j2
+@CrossOrigin(origins = "http://localhost:5173" , allowCredentials = "true")
 public class LoginController {
 
     private final CustomUserDetailService customUserDetailService;
@@ -106,5 +108,19 @@ public class LoginController {
         }
         userService.verifyOtp(email,request.get("otp").toString());
         return new ResponseEntity<>("your email verified",HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response){
+        ResponseCookie cookie=ResponseCookie.from("jwtToken","")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .sameSite("strict")
+                .build();
+        log.info("logout successfully..");
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .body("logout successfully..");
     }
 }
