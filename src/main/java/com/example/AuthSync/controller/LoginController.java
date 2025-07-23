@@ -8,10 +8,8 @@ import com.example.AuthSync.service.UserService;
 import com.example.AuthSync.utility.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -96,6 +94,7 @@ public class LoginController {
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOtp(@CurrentSecurityContext(expression = "authentication?.name")String email){
         userService.sendOtp(email);
+        log.info("otp send to the register email..");
         return new ResponseEntity<>("otp sent to register no",HttpStatus.OK);
     }
 
