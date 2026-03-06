@@ -1,9 +1,11 @@
 package com.example.AuthSync.service;
 
+import org.hibernate.annotations.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,7 @@ public class MailService {
       @Value("${spring.mail.properties.mail.smtp.from}")
       private String fromMail;
 
+      @Async   // make the Async
       public void welcomeMail(String  toMail,String name){
           SimpleMailMessage message=new SimpleMailMessage();
           message.setFrom(fromMail);
@@ -27,6 +30,7 @@ public class MailService {
           javaMailSender.send(message);
       }
 
+      @Async
     public void sendOtpToMail(String  toMail,String otp,String name){
         SimpleMailMessage message=new SimpleMailMessage();
         message.setFrom(fromMail);
@@ -42,6 +46,7 @@ public class MailService {
         javaMailSender.send(message);
     }
 
+    @Async
     public void restPasswordSucessMail(String toMail,String name){
         SimpleMailMessage message=new SimpleMailMessage();
         message.setFrom(fromMail);
@@ -55,6 +60,7 @@ public class MailService {
     }
 
 
+    @Async
     public void sendOtpToEmailVerification(String  toMail,String otp,String name){
         SimpleMailMessage message=new SimpleMailMessage();
         message.setFrom(fromMail);
